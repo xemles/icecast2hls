@@ -33,7 +33,7 @@ set("clock.allow_streaming_errors",false)
 
 # Retrieve configuration from environment
 
-hlspath = ref getenv("HLSPATH")
+hlspath = ref(getenv("HLSPATH"))
 
 if !hlspath == "" then
   hlspath := "/hls"
@@ -73,7 +73,7 @@ end
 
 ### Inputs
 
-preferred_live_source = ref "srt1"
+preferred_live_source = ref("srt1")
 
 def check_if_preferred_livesource(set_is_preferred_livesource, source) =
   def callback() =
@@ -87,7 +87,7 @@ def check_if_preferred_livesource(set_is_preferred_livesource, source) =
   callback
 end
 
-srt1 = input.srt(id="input_srt1", 
+srt1 = input.srt(id="input_srt1",
                  port=10000)
 
 # Get metrics
@@ -101,14 +101,14 @@ thread.run.recurrent(delay=0.,check_if_preferred_livesource(set_is_preferred_liv
 
 # Wrap input in a buffer
 srt1 = buffer(id="buffer_srt1",
-              fallible=true, 
+              fallible=true,
               max=3.0,
               srt1)
 
 # Tag source with it's name in metadata
 srt1 = source_tag(srt1, "srt1")
 
-srt2 = input.srt(id="input_srt2", 
+srt2 = input.srt(id="input_srt2",
                      port=10001)
 
 # Get metrics
@@ -122,7 +122,7 @@ thread.run.recurrent(delay=0.,check_if_preferred_livesource(set_is_preferred_liv
 
 # Wrap input in a buffer
 srt2 = buffer(id="buffer_srt2",
-              fallible=true, 
+              fallible=true,
               max=3.0,
               srt2)
 
@@ -144,9 +144,9 @@ def is_playing(n) =
   fun () -> n == !preferred_live_source
 end
 
-live = switch(id="switch_live", 
-              track_sensitive=false, 
-              [(is_playing("srt1"), srt1), 
+live = switch(id="switch_live",
+              track_sensitive=false,
+              [(is_playing("srt1"), srt1),
               (is_playing("srt2"), srt2)])
 
 radio_prod = fallback(id="fallback_prod",
@@ -286,7 +286,7 @@ harbor.http.register(port=8081,method="GET","^/",httphandler)
 
 # Define outputs formats
 
-aac_lofi = 
+aac_lofi =
   %ffmpeg(
     format="mpegts",
     %audio(
@@ -299,7 +299,7 @@ aac_lofi =
     )
   )
 
-aac_midfi = 
+aac_midfi =
   %ffmpeg(
     format="mpegts",
     %audio(
@@ -312,7 +312,7 @@ aac_midfi =
     )
   )
 
-aac_hifi = 
+aac_hifi =
   %ffmpeg(
     format="mpegts",
     %audio(
@@ -356,8 +356,8 @@ output.file.hls(id="output_hls",
                 persist=true,
                 persist_at="state.config",
                 !hlspath,
-                [("aac_lofi",aac_lofi), 
-                 ("aac_midfi", aac_midfi), 
+                [("aac_lofi",aac_lofi),
+                 ("aac_midfi", aac_midfi),
                  ("aac_hifi", aac_hifi)],
                 radio_prod)
 
