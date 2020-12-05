@@ -27,7 +27,7 @@ fallback = fallback(track_sensitive=false, [playlist, single("/radio/fallback.og
 
 aac_lofi = 
   %ffmpeg(
-    format="m4v",
+    format="adts",
     %audio(
       channels=2,
       samplerate=44100,
@@ -39,7 +39,7 @@ aac_lofi =
 
 aac_midfi = 
   %ffmpeg(
-    format="m4v",
+    format="adts",
     %audio(
       channels=2,
       samplerate=44100,
@@ -51,7 +51,7 @@ aac_midfi =
 
 aac_hifi = 
   %ffmpeg(
-    format="m4v",
+    format="adts",
     %audio(
       channels=2,
       samplerate=44100,
