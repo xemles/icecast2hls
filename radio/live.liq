@@ -44,7 +44,7 @@ aac_midfi =
       channels=2,
       samplerate=44100,
       codec="libfdk_aac",
-      b="96k",
+      b="64k",
       afterburner=1
     )
   )
@@ -56,7 +56,7 @@ aac_hifi =
       channels=2,
       samplerate=44100,
       codec="libfdk_aac",
-      b="196k",
+      b="128k",
       afterburner=1
     )
   )
@@ -64,8 +64,8 @@ aac_hifi =
 # Defines stream infos that cannot be guessed by liqudisoap
 
 streams_info = [("aac_lofi",(32000,"mp4a.40.2","aac")),
-                ("aac_midfi",(96000,"mp4a.40.2","aac")),
-                ("aac_hifi",(196000,"mp4a.40.2","aac"))]
+                ("aac_midfi",(64000,"mp4a.40.2","aac")),
+                ("aac_hifi",(128000,"mp4a.40.2","aac"))]
 
 # Output to HLS
 
